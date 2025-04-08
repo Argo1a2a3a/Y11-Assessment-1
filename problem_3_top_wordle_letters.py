@@ -1,17 +1,26 @@
 import requests
+words_text = requests.get("https://raw.githubusercontent.com/tabatkins/wordle-list/refs/heads/main/words").content
+words = words_text.split()
 
-# You can ignore how this function works, it's just used to get the list of words in all_words above
-def get_valid_wordle_words():
-    str_words = []
-    words_text = requests.get("https://raw.githubusercontent.com/tabatkins/wordle-list/refs/heads/main/words") \
-                        .content
-    words = words_text.split()
-    for word in words:
-        str_words.append(str(word.decode('ascii')))
-    return str_words
 
-# all_words will contains a list of all valid words that you can use
-all_words = get_valid_wordle_words()
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+letter_counts = {}
+for word in words:
+    for letter in letters:
+        if letter in str(word):
+            count = letter_counts.get(letter, 0)
+            letter_counts[letter] = count + 1
+
+
+
+sorted_letters = sorted(letter_counts.items(), key=lambda item: item[1], reverse=True)
+
+
+for i, (letter, count) in enumerate(sorted_letters):
+    if i == 0:
+        print(f"The most common letter is '{letter}' with a count of {count}.")
+
 
 
 
